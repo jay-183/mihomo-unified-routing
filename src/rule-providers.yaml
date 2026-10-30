@@ -1,0 +1,134 @@
+providers:
+  reject:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+    path: ./ruleset/loyalsoldier/reject.yaml
+  icloud:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
+    path: ./ruleset/loyalsoldier/icloud.yaml
+  apple:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
+    path: ./ruleset/loyalsoldier/apple.yaml
+  google:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt
+    path: ./ruleset/loyalsoldier/google.yaml
+  proxy:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt
+    path: ./ruleset/loyalsoldier/proxy.yaml
+  direct:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt
+    path: ./ruleset/loyalsoldier/direct.yaml
+  private:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt
+    path: ./ruleset/loyalsoldier/private.yaml
+  gfw:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt
+    path: ./ruleset/loyalsoldier/gfw.yaml
+  tld-not-cn:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt
+    path: ./ruleset/loyalsoldier/tld-not-cn.yaml
+  applications:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt
+    path: ./ruleset/loyalsoldier/applications.yaml
+  telegramcidr:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
+    path: ./ruleset/loyalsoldier/telegramcidr.yaml
+  cncidr:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt
+    path: ./ruleset/loyalsoldier/cncidr.yaml
+  lancidr:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    interval: 86400
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt
+    path: ./ruleset/loyalsoldier/lancidr.yaml
+  openai:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/openai.yaml
+    path: ./ruleset/MetaCubeX/openai.yaml
+  anthropic:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/anthropic.yaml
+    path: ./ruleset/MetaCubeX/anthropic.yaml
+  google-gemini:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/google-gemini.yaml
+    path: ./ruleset/MetaCubeX/google-gemini.yaml
+  xai:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/xai.yaml
+    path: ./ruleset/MetaCubeX/xai.yaml
+  perplexity:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/perplexity.yaml
+    path: ./ruleset/MetaCubeX/perplexity.yaml
+  microsoft:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/microsoft.yaml
+    path: ./ruleset/MetaCubeX/microsoft.yaml

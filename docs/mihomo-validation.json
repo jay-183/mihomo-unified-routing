@@ -1,0 +1,22 @@
+{
+  "build": "5fb33ff42f95aeba",
+  "core": "Mihomo Meta v1.19.33 windows amd64 with go1.26.10 Wed Oct 21 16:44:15 UTC 2026\nUse tags: with_gvisor",
+  "cases": [
+    {
+      "case": "inline",
+      "config_test": "passed",
+      "runtime_group_membership": "passed"
+    },
+    {
+      "case": "provider",
+      "config_test": "passed",
+      "runtime_group_membership": "passed"
+    },
+    {
+      "case": "mixed",
+      "config_test": "passed",
+      "runtime_group_membership": "passed"
+    }
+  ],
+  "scope": "配置解析与真实节点分组；未连接真实机场或测试出口流量"
+}

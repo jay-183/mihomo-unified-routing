@@ -1,0 +1,575 @@
+// Unified routing build: 5fb33ff42f95aeba
+// Generated file. Edit src/*.yaml and rebuild.
+const ROUTING = {
+  "proxy-groups": [
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "🔰 模式选择",
+      "type": "select",
+      "proxies": [
+        "🖐 手动选择",
+        "♻️ 自动选择",
+        "🇭🇰 香港",
+        "🇹🇼 台湾",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇺🇸 美国",
+        "🌍 欧洲",
+        "🌐 其他地区",
+        "🚑 故障转移",
+        "⚖️ 负载均衡",
+        "DIRECT"
+      ]
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "🖐 手动选择",
+      "type": "select",
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset"
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "♻️ 自动选择",
+      "type": "url-test",
+      "tolerance": 50,
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset"
+    },
+    {
+      "name": "🤖 OpenAI",
+      "type": "select",
+      "proxies": [
+        "🔰 模式选择",
+        "🖐 手动选择",
+        "♻️ 自动选择",
+        "🇭🇰 香港",
+        "🇹🇼 台湾",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇺🇸 美国",
+        "🌍 欧洲",
+        "🌐 其他地区"
+      ]
+    },
+    {
+      "name": "✨ Gemini",
+      "type": "select",
+      "proxies": [
+        "🔰 模式选择",
+        "🖐 手动选择",
+        "♻️ 自动选择",
+        "🇭🇰 香港",
+        "🇹🇼 台湾",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇺🇸 美国",
+        "🌍 欧洲",
+        "🌐 其他地区"
+      ]
+    },
+    {
+      "name": "🧠 其他 AI",
+      "type": "select",
+      "proxies": [
+        "🔰 模式选择",
+        "🖐 手动选择",
+        "♻️ 自动选择",
+        "🇭🇰 香港",
+        "🇹🇼 台湾",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇺🇸 美国",
+        "🌍 欧洲",
+        "🌐 其他地区"
+      ]
+    },
+    {
+      "name": "📲 Telegram",
+      "type": "select",
+      "proxies": [
+        "🔰 模式选择",
+        "🖐 手动选择",
+        "♻️ 自动选择",
+        "🇭🇰 香港",
+        "🇹🇼 台湾",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇺🇸 美国",
+        "🌍 欧洲",
+        "🌐 其他地区"
+      ]
+    },
+    {
+      "name": "📢 谷歌服务",
+      "type": "select",
+      "proxies": [
+        "🔰 模式选择",
+        "🖐 手动选择",
+        "♻️ 自动选择",
+        "🇭🇰 香港",
+        "🇹🇼 台湾",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇺🇸 美国",
+        "🌍 欧洲",
+        "🌐 其他地区"
+      ]
+    },
+    {
+      "name": "🍎 苹果服务",
+      "type": "select",
+      "proxies": [
+        "🔗 全局直连",
+        "🔰 模式选择",
+        "🖐 手动选择",
+        "♻️ 自动选择",
+        "🇭🇰 香港",
+        "🇹🇼 台湾",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇺🇸 美国",
+        "🌍 欧洲",
+        "🌐 其他地区"
+      ]
+    },
+    {
+      "name": "Ⓜ️ 微软服务",
+      "type": "select",
+      "proxies": [
+        "🔗 全局直连",
+        "🔰 模式选择",
+        "🖐 手动选择",
+        "♻️ 自动选择",
+        "🇭🇰 香港",
+        "🇹🇼 台湾",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇺🇸 美国",
+        "🌍 欧洲",
+        "🌐 其他地区"
+      ]
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "🇭🇰 香港",
+      "type": "url-test",
+      "tolerance": 50,
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset",
+      "filter": "(?i)香港|港|HK|Hong Kong|HongKong"
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "🇹🇼 台湾",
+      "type": "url-test",
+      "tolerance": 50,
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset",
+      "filter": "(?i)台湾|台北|新北|TW|Taiwan"
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "🇯🇵 日本",
+      "type": "url-test",
+      "tolerance": 50,
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset",
+      "filter": "(?i)日本|东京|大阪|JP|Japan|Tokyo|Osaka"
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "🇸🇬 新加坡",
+      "type": "url-test",
+      "tolerance": 50,
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset",
+      "filter": "(?i)新加坡|狮城|SG|Singapore"
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "🇺🇸 美国",
+      "type": "url-test",
+      "tolerance": 50,
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset",
+      "filter": "(?i)美国|洛杉矶|圣何塞|西雅图|纽约|达拉斯|芝加哥|US|USA|United States|Los Angeles|San Jose|Seattle|New York|Dallas|Chicago"
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "🌍 欧洲",
+      "type": "url-test",
+      "tolerance": 50,
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset",
+      "filter": "(?i)欧洲|EU|Europe|英国|伦敦|UK|United Kingdom|London|法国|France|巴黎|Paris|德国|Germany|法兰克福|Frankfurt|荷兰|Netherlands|阿姆斯特丹|Amsterdam|瑞士|Switzerland|西班牙|Spain|意大利|Italy|波兰|Poland|芬兰|Finland|瑞典|Sweden|挪威|Norway"
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "🌐 其他地区",
+      "type": "url-test",
+      "tolerance": 50,
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset|香港|港|HK|Hong Kong|HongKong|台湾|台北|新北|TW|Taiwan|日本|东京|大阪|JP|Japan|Tokyo|Osaka|新加坡|狮城|SG|Singapore|美国|洛杉矶|圣何塞|西雅图|纽约|达拉斯|芝加哥|US|USA|United States|Los Angeles|San Jose|Seattle|New York|Dallas|Chicago|欧洲|EU|Europe|英国|伦敦|UK|United Kingdom|London|法国|France|巴黎|Paris|德国|Germany|法兰克福|Frankfurt|荷兰|Netherlands|阿姆斯特丹|Amsterdam|瑞士|Switzerland|西班牙|Spain|意大利|Italy|波兰|Poland|芬兰|Finland|瑞典|Sweden|挪威|Norway"
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "🚑 故障转移",
+      "type": "fallback",
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset"
+    },
+    {
+      "interval": 300,
+      "timeout": 5000,
+      "url": "https://www.gstatic.com/generate_204",
+      "lazy": true,
+      "max-failed-times": 3,
+      "hidden": false,
+      "name": "⚖️ 负载均衡",
+      "type": "load-balance",
+      "strategy": "consistent-hashing",
+      "include-all": true,
+      "exclude-filter": "(?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset"
+    },
+    {
+      "name": "🥰 广告过滤",
+      "type": "select",
+      "proxies": [
+        "REJECT",
+        "DIRECT"
+      ]
+    },
+    {
+      "name": "🔗 全局直连",
+      "type": "select",
+      "proxies": [
+        "DIRECT",
+        "🔰 模式选择"
+      ]
+    },
+    {
+      "name": "🐬 自定义直连",
+      "type": "select",
+      "proxies": [
+        "🔗 全局直连",
+        "🔰 模式选择"
+      ]
+    },
+    {
+      "name": "🐳 自定义代理",
+      "type": "select",
+      "proxies": [
+        "🔰 模式选择",
+        "🖐 手动选择",
+        "♻️ 自动选择",
+        "🇭🇰 香港",
+        "🇹🇼 台湾",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇺🇸 美国",
+        "🌍 欧洲",
+        "🌐 其他地区"
+      ]
+    },
+    {
+      "name": "🐟 漏网之鱼",
+      "type": "select",
+      "proxies": [
+        "🔰 模式选择",
+        "🖐 手动选择",
+        "♻️ 自动选择",
+        "🇭🇰 香港",
+        "🇹🇼 台湾",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇺🇸 美国",
+        "🌍 欧洲",
+        "🌐 其他地区",
+        "DIRECT"
+      ]
+    }
+  ],
+  "rule-providers": {
+    "reject": {
+      "type": "http",
+      "behavior": "domain",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt",
+      "path": "./ruleset/loyalsoldier/reject.yaml"
+    },
+    "icloud": {
+      "type": "http",
+      "behavior": "domain",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt",
+      "path": "./ruleset/loyalsoldier/icloud.yaml"
+    },
+    "apple": {
+      "type": "http",
+      "behavior": "domain",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt",
+      "path": "./ruleset/loyalsoldier/apple.yaml"
+    },
+    "google": {
+      "type": "http",
+      "behavior": "domain",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt",
+      "path": "./ruleset/loyalsoldier/google.yaml"
+    },
+    "proxy": {
+      "type": "http",
+      "behavior": "domain",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt",
+      "path": "./ruleset/loyalsoldier/proxy.yaml"
+    },
+    "direct": {
+      "type": "http",
+      "behavior": "domain",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt",
+      "path": "./ruleset/loyalsoldier/direct.yaml"
+    },
+    "private": {
+      "type": "http",
+      "behavior": "domain",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt",
+      "path": "./ruleset/loyalsoldier/private.yaml"
+    },
+    "gfw": {
+      "type": "http",
+      "behavior": "domain",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt",
+      "path": "./ruleset/loyalsoldier/gfw.yaml"
+    },
+    "tld-not-cn": {
+      "type": "http",
+      "behavior": "domain",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt",
+      "path": "./ruleset/loyalsoldier/tld-not-cn.yaml"
+    },
+    "applications": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt",
+      "path": "./ruleset/loyalsoldier/applications.yaml"
+    },
+    "telegramcidr": {
+      "type": "http",
+      "behavior": "ipcidr",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt",
+      "path": "./ruleset/loyalsoldier/telegramcidr.yaml"
+    },
+    "cncidr": {
+      "type": "http",
+      "behavior": "ipcidr",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt",
+      "path": "./ruleset/loyalsoldier/cncidr.yaml"
+    },
+    "lancidr": {
+      "type": "http",
+      "behavior": "ipcidr",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt",
+      "path": "./ruleset/loyalsoldier/lancidr.yaml"
+    },
+    "openai": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/openai.yaml",
+      "path": "./ruleset/MetaCubeX/openai.yaml"
+    },
+    "anthropic": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/anthropic.yaml",
+      "path": "./ruleset/MetaCubeX/anthropic.yaml"
+    },
+    "google-gemini": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/google-gemini.yaml",
+      "path": "./ruleset/MetaCubeX/google-gemini.yaml"
+    },
+    "xai": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/xai.yaml",
+      "path": "./ruleset/MetaCubeX/xai.yaml"
+    },
+    "perplexity": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/perplexity.yaml",
+      "path": "./ruleset/MetaCubeX/perplexity.yaml"
+    },
+    "microsoft": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "interval": 86400,
+      "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/microsoft.yaml",
+      "path": "./ruleset/MetaCubeX/microsoft.yaml"
+    }
+  },
+  "rules": [
+    "DOMAIN-KEYWORD,dnscheck.tools,🐳 自定义代理",
+    "DOMAIN-KEYWORD,ip.net.coffee,🐳 自定义代理",
+    "DOMAIN-KEYWORD,github,🐳 自定义代理",
+    "DOMAIN-KEYWORD,9kqz23b19z,🐳 自定义代理",
+    "DOMAIN-KEYWORD,ippure,🖐 手动选择",
+    "DOMAIN-KEYWORD,todetect,🐳 自定义代理",
+    "DOMAIN-KEYWORD,biu.moe,🐬 自定义直连",
+    "DOMAIN-KEYWORD,joox,🇭🇰 香港",
+    "DOMAIN-KEYWORD,music-api.gdstudio.xyz,🐬 自定义直连",
+    "DOMAIN-KEYWORD,dglab.xiaoyudi,🐬 自定义直连",
+    "DOMAIN-KEYWORD,blinkroom,🐬 自定义直连",
+    "DOMAIN-KEYWORD,dglabplay,🐬 自定义直连",
+    "IP-CIDR,18.162.180.119/32,🐬 自定义直连,no-resolve",
+    "DOMAIN-KEYWORD,clerk,🐬 自定义直连",
+    "DOMAIN-KEYWORD,dghub.top,🐬 自定义直连",
+    "DOMAIN-SUFFIX,googleapis.cn,📢 谷歌服务",
+    "DOMAIN-SUFFIX,gstatic.com,📢 谷歌服务",
+    "DOMAIN-SUFFIX,xn--ngstr-lra8j.com,📢 谷歌服务",
+    "DOMAIN-SUFFIX,github.io,🔰 模式选择",
+    "RULE-SET,openai,🤖 OpenAI",
+    "RULE-SET,google-gemini,✨ Gemini",
+    "RULE-SET,anthropic,🧠 其他 AI",
+    "RULE-SET,xai,🧠 其他 AI",
+    "RULE-SET,perplexity,🧠 其他 AI",
+    "RULE-SET,applications,🔗 全局直连",
+    "RULE-SET,private,🔗 全局直连",
+    "RULE-SET,reject,🥰 广告过滤",
+    "RULE-SET,microsoft,Ⓜ️ 微软服务",
+    "RULE-SET,icloud,🍎 苹果服务",
+    "RULE-SET,apple,🍎 苹果服务",
+    "RULE-SET,google,📢 谷歌服务",
+    "RULE-SET,proxy,🔰 模式选择",
+    "RULE-SET,gfw,🔰 模式选择",
+    "RULE-SET,tld-not-cn,🔰 模式选择",
+    "RULE-SET,direct,🔗 全局直连",
+    "RULE-SET,lancidr,🔗 全局直连,no-resolve",
+    "RULE-SET,cncidr,🔗 全局直连,no-resolve",
+    "RULE-SET,telegramcidr,📲 Telegram,no-resolve",
+    "GEOIP,LAN,🔗 全局直连,no-resolve",
+    "GEOIP,CN,🔗 全局直连,no-resolve",
+    "MATCH,🐟 漏网之鱼"
+  ]
+};
+
+function main(config) {
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    throw new Error("订阅必须是配置对象。");
+  }
+  const proxies = Array.isArray(config.proxies) ? config.proxies : [];
+  const providers = config["proxy-providers"] == null ? {} : config["proxy-providers"];
+  if (typeof providers !== "object" || Array.isArray(providers)) {
+    throw new Error("proxy-providers 必须是对象。");
+  }
+  const valid = proxies.filter(p => p && typeof p === "object" &&
+    typeof p.name === "string" && p.name.trim());
+  if (!valid.length && !Object.keys(providers).length) {
+    throw new Error("当前订阅中未找到任何代理节点或 proxy-provider。");
+  }
+  const groupNames = ROUTING["proxy-groups"].map(g => g.name);
+  const names = new Set(["DIRECT", "REJECT", "COMPATIBLE", "GLOBAL", ...groupNames]);
+  for (const proxy of valid) {
+    if (names.has(proxy.name)) throw new Error("节点名称重复或与策略冲突：" + proxy.name);
+    names.add(proxy.name);
+  }
+  const routing = JSON.parse(JSON.stringify(ROUTING));
+  config["proxy-groups"] = routing["proxy-groups"];
+  config["rule-providers"] = routing["rule-providers"];
+  config.rules = routing.rules;
+  config["proxy-providers"] = providers;
+  config.proxies = valid.map(p => ({...p, udp: true}));
+  return config;
+}
+

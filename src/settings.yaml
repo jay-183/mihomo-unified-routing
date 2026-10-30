@@ -1,0 +1,10 @@
+test:
+  interval: 300
+  timeout: 5000
+  url: https://www.gstatic.com/generate_204
+  lazy: true
+  max-failed-times: 3
+  hidden: false
+node-exclude-filter: (?i)剩余流量|流量剩余|套餐到期|到期时间|到期|重置时间|重置|traffic|expire|expiry|reset
+udp: true
+region-tolerance: 50
