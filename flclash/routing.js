@@ -1,4 +1,4 @@
-// Unified routing build: 1bc00199357046df
+// Unified routing build: 858dc607a0145399
 // Generated file. Edit src/*.yaml and rebuild.
 const ROUTING = {
   "proxy-groups": [
@@ -996,6 +996,7 @@ function main(config) {
   config.rules = routing.rules;
   config["proxy-providers"] = providers;
   config.proxies = valid.map(p => ({...p, udp: true}));
+  config.profile = {...config.profile, "store-selected": true};
   return config;
 }
 

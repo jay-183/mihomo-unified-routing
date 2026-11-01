@@ -1,5 +1,5 @@
 {
-  "build": "1bc00199357046df",
+  "build": "858dc607a0145399",
   "ios_runtime_tested": false,
   "shadowrocket_unsupported_public_rules": {
     "applications": [
@@ -151,6 +151,8 @@
     "Shadowrocket timeout 使用秒；lazy 与 max-failed-times 无已核实的等价参数。",
     "Shadowrocket 编译可能优先处理域名类规则、后置 GEOIP；输出文本维持原顺序，运行顺序需 iOS 验证。",
     "Mihomo 公共源每 86400 秒更新；Shadowrocket 使用本次构建的转换快照，需更新并编译配置。",
+    "Mihomo 脚本启用 profile.store-selected，在同一内核缓存中恢复本地选择；组名和选项必须仍然存在。",
+    "Shadowrocket 整份远程配置更新会覆盖本地修改；保留自选策略需在本地扩展配置中覆盖对应分组，并只更新被包含的远程配置，详见 README。",
     "Windows 原生全局脚本为本地文件；提供校验、备份的外部同步工具，写入后仍需客户端重载。",
     "FlClash v0.9.2 核实源码支持 URL 脚本自动更新：资源自动更新开关 geoAutoUpdate、间隔 geoUpdateInterval（小时），启动及定时检查；旧版本请手动更新脚本。",
     "节点正则忠实保留原式；例如 US 可能匹配含 us 的其他名称，须按机场命名自行调整。",
