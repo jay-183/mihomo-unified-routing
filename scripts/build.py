@@ -94,10 +94,13 @@ def generate(model, upstream, base_url, output):
         "shadowrocket_unsupported_public_rules": unsupported,
         "shadowrocket_empty_providers": sorted(empty),
         "shadowrocket_domain_regex_approximations": shadowrocket.DOMAIN_REGEX_APPROXIMATIONS,
+        "shadowrocket_domain_regex_expansions": shadowrocket.DOMAIN_REGEX_EXPANSIONS,
+        "shadowrocket_redundant_domain_regex": shadowrocket.GOOGLE_REDUNDANT_REGEX,
         "differences": [
             "Shadowrocket 无可公开运行的内核校验器；仅做静态检查和规则转换对照。",
             "Shadowrocket 不支持进程匹配；公共源中的进程规则显式记录，后续域名/IP规则继续匹配。",
             "OpenAI 公共源的一个 DOMAIN-REGEX 改为 DOMAIN-WILDCARD：覆盖原匹配，但放宽数字段为任意字符；精确条目见 shadowrocket_domain_regex_approximations。",
+            "Netflix 的四条 DOMAIN-REGEX 分别展开为两条通配符规则；Disney 一条正则精确展开为八个域名；Google 两条冗余正则由同一规则集已有的后缀规则覆盖，完整映射见本报告。",
             "MATCH 转为 FINAL；GEOIP LAN 按 Mihomo isLan 定义展开为 CIDR；IP-CIDR6 转为 IP-CIDR。",
             "Shadowrocket load-balance 保持同域名粘性，但不保证与 Mihomo consistent-hashing 选中同一节点。",
             "Shadowrocket timeout 使用秒；lazy 与 max-failed-times 无已核实的等价参数。",

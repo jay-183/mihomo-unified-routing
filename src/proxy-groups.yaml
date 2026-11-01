@@ -1,84 +1,145 @@
 service-options:
-- 🔰 模式选择
-- 🖐 手动选择
-- ♻️ 自动选择
+- 模式选择
+- 手动选择
+- 自动选择
 - $regions
+- 故障转移
+- 负载均衡
+- DIRECT
 groups:
-- name: 🔰 模式选择
+- name: 模式选择
   type: select
   proxies:
-  - 🖐 手动选择
-  - ♻️ 自动选择
+  - 手动选择
+  - 自动选择
   - $regions
-  - 🚑 故障转移
-  - ⚖️ 负载均衡
+  - 故障转移
+  - 负载均衡
   - DIRECT
-- name: 🖐 手动选择
+- name: 手动选择
   type: select
   node-pool: true
-- name: ♻️ 自动选择
+- name: 自动选择
   type: url-test
   tolerance: 50
   node-pool: true
-- name: 🤖 OpenAI
+- name: 国外媒体
   type: select
   proxies:
   - $services
-- name: ✨ Gemini
+- name: AI 服务
   type: select
   proxies:
   - $services
-- name: 🧠 其他 AI
+- name: 通讯社交
   type: select
   proxies:
   - $services
-- name: 📲 Telegram
+- name: YouTube
+  type: select
+  proxies:
+  - 国外媒体
+  - $services
+- name: Netflix
+  type: select
+  proxies:
+  - 国外媒体
+  - $services
+- name: Disney+
+  type: select
+  proxies:
+  - 国外媒体
+  - $services
+- name: TikTok
+  type: select
+  proxies:
+  - 国外媒体
+  - $services
+- name: OpenAI
+  type: select
+  proxies:
+  - AI 服务
+  - $services
+- name: Gemini
+  type: select
+  proxies:
+  - AI 服务
+  - $services
+- name: Claude
+  type: select
+  proxies:
+  - AI 服务
+  - $services
+- name: Grok
+  type: select
+  proxies:
+  - AI 服务
+  - $services
+- name: Telegram
+  type: select
+  proxies:
+  - 通讯社交
+  - $services
+- name: Discord
+  type: select
+  proxies:
+  - 通讯社交
+  - $services
+- name: X
+  type: select
+  proxies:
+  - 通讯社交
+  - $services
+- name: Facebook
+  type: select
+  proxies:
+  - 通讯社交
+  - $services
+- name: Instagram
+  type: select
+  proxies:
+  - 通讯社交
+  - $services
+- name: Reddit
+  type: select
+  proxies:
+  - 通讯社交
+  - $services
+- name: Google
   type: select
   proxies:
   - $services
-- name: 📢 谷歌服务
+- name: Apple
   type: select
   proxies:
   - $services
-- name: 🍎 苹果服务
+- name: Microsoft
   type: select
   proxies:
-  - 🔗 全局直连
-  - $services
-- name: Ⓜ️ 微软服务
-  type: select
-  proxies:
-  - 🔗 全局直连
   - $services
 - $regions
-- name: 🚑 故障转移
+- name: 故障转移
   type: fallback
   node-pool: true
-- name: ⚖️ 负载均衡
+- name: 负载均衡
   type: load-balance
   strategy: consistent-hashing
   node-pool: true
-- name: 🥰 广告过滤
+- name: 广告过滤
   type: select
   proxies:
   - REJECT
   - DIRECT
-- name: 🔗 全局直连
+- name: 直连模式
   type: select
   proxies:
   - DIRECT
-  - 🔰 模式选择
-- name: 🐬 自定义直连
-  type: select
-  proxies:
-  - 🔗 全局直连
-  - 🔰 模式选择
-- name: 🐳 自定义代理
+  - 模式选择
+- name: 自定义代理
   type: select
   proxies:
   - $services
-- name: 🐟 漏网之鱼
+- name: 漏网之鱼
   type: select
   proxies:
   - $services
-  - DIRECT

@@ -1,7 +1,0 @@
-# perplexity; source: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/perplexity.yaml
-# Policy-free Shadowrocket rules; see THIRD_PARTY.md and compatibility.json.
-DOMAIN,ppl-ai-file-upload.s3.amazonaws.com
-DOMAIN,pplx-res.cloudinary.com
-DOMAIN-SUFFIX,perplexity.ai
-DOMAIN-SUFFIX,perplexity.com
-DOMAIN-SUFFIX,pplx.ai

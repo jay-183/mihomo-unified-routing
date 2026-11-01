@@ -150,7 +150,7 @@ def load_model(root=ROOT / "src"):
     exclude = settings["node-exclude-filter"]
     known = "|".join(r["filter"].removeprefix("(?i)") for r in regions)
     other_exclude = "(?i)" + exclude.removeprefix("(?i)") + "|" + known
-    region_groups = []
+    region_groups, region_names = [], []
     for region in regions + [{"name": region_source["other"]}]:
         group = {**settings["test"], "name": region["name"], "type": "url-test",
                  "tolerance": settings["region-tolerance"], "include-all": True,
@@ -158,7 +158,7 @@ def load_model(root=ROOT / "src"):
         if "filter" in region:
             group["filter"] = region["filter"]
         region_groups.append(group)
-    region_names = [g["name"] for g in region_groups]
+        region_names.append(region["name"])
 
     def expand(items, services=None):
         result = []

@@ -9,6 +9,31 @@ DOMAIN_REGEX_APPROXIMATIONS = {
         "DOMAIN-WILDCARD,chatgpt-async-webps-prod-*-*.webpubsub.azure.com",
 }
 
+# Known regexes have exact wildcard or finite domain expansions.
+DOMAIN_REGEX_EXPANSIONS = {
+    rf"DOMAIN-REGEX,(^|\.){prefix}.+\.amazonaws\.com$": [
+        f"DOMAIN-WILDCARD,{literal}?*.amazonaws.com",
+        f"DOMAIN-WILDCARD,*.{literal}?*.amazonaws.com",
+    ]
+    for prefix, literal in [
+        ("apiproxy-device-prod-nlb-", "apiproxy-device-prod-nlb-"),
+        ("apiproxy-website-nlb-prod-", "apiproxy-website-nlb-prod-"),
+        (r"dualstack\.apiproxy-", "dualstack.apiproxy-"),
+        (r"dualstack\.ichnaea-web-", "dualstack.ichnaea-web-"),
+    ]
+}
+DOMAIN_REGEX_EXPANSIONS[r"DOMAIN-REGEX,^hses[1-7]?\.akamaized\.net$"] = [
+    f"DOMAIN,hses{suffix}.akamaized.net" for suffix in ["", *range(1, 8)]
+]
+
+# The complete Google list already matches both suffixes independently.
+GOOGLE_REDUNDANT_REGEX = {
+    rf"DOMAIN-REGEX,^r+[0-9]+(---|\.)sn-(2x3|ni5|j5o)\w{{5}}\.{escaped}$":
+        f"DOMAIN-SUFFIX,{suffix}"
+    for escaped, suffix in ((r"xn--ngstr-lra8j\.com", "xn--ngstr-lra8j.com"),
+                            (r"googlevideo\.com", "googlevideo.com"))
+}
+
 
 def node_filter(group):
     excluded = group["exclude-filter"].removeprefix("(?i)")
@@ -39,6 +64,12 @@ def convert_payload(name, provider, payload):
             network = ipaddress.ip_network(entry, strict=False)
             converted.append(f"IP-CIDR,{network}")
         else:
+            if entry in DOMAIN_REGEX_EXPANSIONS:
+                converted.extend(DOMAIN_REGEX_EXPANSIONS[entry])
+                continue
+            if entry in GOOGLE_REDUNDANT_REGEX and GOOGLE_REDUNDANT_REGEX[entry] in payload:
+                converted.append(GOOGLE_REDUNDANT_REGEX[entry])
+                continue
             if entry in DOMAIN_REGEX_APPROXIMATIONS:
                 converted.append(DOMAIN_REGEX_APPROXIMATIONS[entry])
                 continue

@@ -1,16 +1,16 @@
 rules:
-- DOMAIN-KEYWORD,dnscheck.tools,🐳 自定义代理
-- DOMAIN-KEYWORD,ip.net.coffee,🐳 自定义代理
-- DOMAIN-KEYWORD,github,🐳 自定义代理
-- DOMAIN-KEYWORD,9kqz23b19z,🐳 自定义代理
-- DOMAIN-KEYWORD,ippure,🖐 手动选择
-- DOMAIN-KEYWORD,todetect,🐳 自定义代理
-- DOMAIN-KEYWORD,biu.moe,🐬 自定义直连
-- DOMAIN-KEYWORD,joox,🇭🇰 香港
-- DOMAIN-KEYWORD,music-api.gdstudio.xyz,🐬 自定义直连
-- DOMAIN-KEYWORD,dglab.xiaoyudi,🐬 自定义直连
-- DOMAIN-KEYWORD,blinkroom,🐬 自定义直连
-- DOMAIN-KEYWORD,dglabplay,🐬 自定义直连
-- IP-CIDR,18.162.180.119/32,🐬 自定义直连,no-resolve
-- DOMAIN-KEYWORD,clerk,🐬 自定义直连
-- DOMAIN-KEYWORD,dghub.top,🐬 自定义直连
+- DOMAIN-KEYWORD,dnscheck.tools,自定义代理
+- DOMAIN-KEYWORD,ip.net.coffee,自定义代理
+- DOMAIN-KEYWORD,github,自定义代理
+- DOMAIN-KEYWORD,9kqz23b19z,自定义代理
+- DOMAIN-KEYWORD,ippure,手动选择
+- DOMAIN-KEYWORD,todetect,自定义代理
+- DOMAIN-KEYWORD,biu.moe,直连模式
+- DOMAIN-KEYWORD,joox,香港
+- DOMAIN-KEYWORD,music-api.gdstudio.xyz,直连模式
+- DOMAIN-KEYWORD,dglab.xiaoyudi,直连模式
+- DOMAIN-KEYWORD,blinkroom,直连模式
+- DOMAIN-KEYWORD,dglabplay,直连模式
+- IP-CIDR,18.162.180.119/32,直连模式,no-resolve
+- DOMAIN-KEYWORD,clerk,直连模式
+- DOMAIN-KEYWORD,dghub.top,直连模式

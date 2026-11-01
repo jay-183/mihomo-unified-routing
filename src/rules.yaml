@@ -1,27 +1,35 @@
 rules:
-- DOMAIN-SUFFIX,googleapis.cn,📢 谷歌服务
-- DOMAIN-SUFFIX,gstatic.com,📢 谷歌服务
-- DOMAIN-SUFFIX,xn--ngstr-lra8j.com,📢 谷歌服务
-- DOMAIN-SUFFIX,github.io,🔰 模式选择
-- RULE-SET,openai,🤖 OpenAI
-- RULE-SET,google-gemini,✨ Gemini
-- RULE-SET,anthropic,🧠 其他 AI
-- RULE-SET,xai,🧠 其他 AI
-- RULE-SET,perplexity,🧠 其他 AI
-- RULE-SET,applications,🔗 全局直连
-- RULE-SET,private,🔗 全局直连
-- RULE-SET,reject,🥰 广告过滤
-- RULE-SET,microsoft,Ⓜ️ 微软服务
-- RULE-SET,icloud,🍎 苹果服务
-- RULE-SET,apple,🍎 苹果服务
-- RULE-SET,google,📢 谷歌服务
-- RULE-SET,proxy,🔰 模式选择
-- RULE-SET,gfw,🔰 模式选择
-- RULE-SET,tld-not-cn,🔰 模式选择
-- RULE-SET,direct,🔗 全局直连
-- RULE-SET,lancidr,🔗 全局直连,no-resolve
-- RULE-SET,cncidr,🔗 全局直连,no-resolve
-- RULE-SET,telegramcidr,📲 Telegram,no-resolve
-- GEOIP,LAN,🔗 全局直连,no-resolve
-- GEOIP,CN,🔗 全局直连,no-resolve
-- MATCH,🐟 漏网之鱼
+- RULE-SET,openai,OpenAI
+- RULE-SET,google-gemini,Gemini
+- RULE-SET,anthropic,Claude
+- RULE-SET,xai,Grok
+- RULE-SET,applications,直连模式
+- RULE-SET,private,直连模式
+- RULE-SET,reject,广告过滤
+- RULE-SET,youtube,YouTube
+- RULE-SET,netflix,Netflix
+- RULE-SET,disney,Disney+
+- RULE-SET,tiktok,TikTok
+- RULE-SET,telegram,Telegram
+- RULE-SET,telegramcidr,Telegram,no-resolve
+- RULE-SET,discord,Discord
+- RULE-SET,twitter,X
+- RULE-SET,facebook,Facebook
+- RULE-SET,instagram,Instagram
+- RULE-SET,reddit,Reddit
+- DOMAIN-SUFFIX,googleapis.cn,Google
+- DOMAIN-SUFFIX,gstatic.com,Google
+- DOMAIN-SUFFIX,xn--ngstr-lra8j.com,Google
+- RULE-SET,microsoft,Microsoft
+- RULE-SET,icloud,Apple
+- RULE-SET,apple,Apple
+- RULE-SET,google,Google
+- RULE-SET,proxy,模式选择
+- RULE-SET,gfw,模式选择
+- RULE-SET,tld-not-cn,模式选择
+- RULE-SET,direct,直连模式
+- RULE-SET,lancidr,直连模式,no-resolve
+- RULE-SET,cncidr,直连模式,no-resolve
+- GEOIP,LAN,直连模式,no-resolve
+- GEOIP,CN,直连模式,no-resolve
+- MATCH,漏网之鱼

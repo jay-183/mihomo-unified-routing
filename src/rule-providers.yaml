@@ -15,18 +15,18 @@ providers:
     path: ./ruleset/loyalsoldier/icloud.yaml
   apple:
     type: http
-    behavior: domain
+    behavior: classical
     format: yaml
     interval: 86400
-    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
-    path: ./ruleset/loyalsoldier/apple.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/apple.yaml
+    path: ./ruleset/MetaCubeX/apple.yaml
   google:
     type: http
-    behavior: domain
+    behavior: classical
     format: yaml
     interval: 86400
-    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt
-    path: ./ruleset/loyalsoldier/google.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/google.yaml
+    path: ./ruleset/MetaCubeX/google.yaml
   proxy:
     type: http
     behavior: domain
@@ -118,13 +118,6 @@ providers:
     interval: 86400
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/xai.yaml
     path: ./ruleset/MetaCubeX/xai.yaml
-  perplexity:
-    type: http
-    behavior: classical
-    format: yaml
-    interval: 86400
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/perplexity.yaml
-    path: ./ruleset/MetaCubeX/perplexity.yaml
   microsoft:
     type: http
     behavior: classical
@@ -132,3 +125,73 @@ providers:
     interval: 86400
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/microsoft.yaml
     path: ./ruleset/MetaCubeX/microsoft.yaml
+  youtube:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/youtube.yaml
+    path: ./ruleset/MetaCubeX/youtube.yaml
+  netflix:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/netflix.yaml
+    path: ./ruleset/MetaCubeX/netflix.yaml
+  tiktok:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/tiktok.yaml
+    path: ./ruleset/MetaCubeX/tiktok.yaml
+  telegram:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/telegram.yaml
+    path: ./ruleset/MetaCubeX/telegram.yaml
+  discord:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/discord.yaml
+    path: ./ruleset/MetaCubeX/discord.yaml
+  twitter:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/twitter.yaml
+    path: ./ruleset/MetaCubeX/twitter.yaml
+  disney:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/disney.yaml
+    path: ./ruleset/MetaCubeX/disney.yaml
+  instagram:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/instagram.yaml
+    path: ./ruleset/MetaCubeX/instagram.yaml
+  facebook:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/facebook.yaml
+    path: ./ruleset/MetaCubeX/facebook.yaml
+  reddit:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/reddit.yaml
+    path: ./ruleset/MetaCubeX/reddit.yaml

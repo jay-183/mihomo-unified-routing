@@ -9,6 +9,7 @@ import sys
 import tempfile
 import time
 import urllib.request
+from urllib.parse import quote
 
 import yaml
 
@@ -27,7 +28,7 @@ def verify(core):
     version = subprocess.run([core, "-v"], text=True, encoding="utf-8", capture_output=True, check=True).stdout.strip()
     model = load_model()
     cases = {
-        "inline": {"proxies": [node(n) for n in ["HK One", "TW One", "Tokyo", "Singapore", "Seattle", "Paris", "加拿大", "HK 剩余流量"]]},
+        "inline": {"proxies": [node(n) for n in ["HK One", "TW One", "Tokyo", "Singapore", "美国03", "Paris", "加拿大", "HK 剩余流量"]]},
         "provider": {"proxy-providers": {"fixture": {"type": "inline", "payload": [node("Japan Two"), node("US Expiry")], "health-check": {"enable": False}}}},
         "mixed": {"proxies": [node("SG Three")], "proxy-providers": {"fixture": {"type": "inline", "payload": [node("香港 Four"), node("reset HK")], "health-check": {"enable": False}}}},
     }
@@ -90,9 +91,47 @@ def verify(core):
                         expected = {name for name in all_nodes if not re.search(group["exclude-filter"], name)
                                     and ("filter" not in group or re.search(group["filter"], name))}
                         actual = set(observed[group["name"]]["all"])
+                        expected.update(group.get("proxies", []))
                         if actual != (expected or {"COMPATIBLE"}):
                             raise ValueError(f"{label} / {group['name']}: 节点成员不符 {actual} != {expected}")
-                    results.append({"case": label, "config_test": "passed", "runtime_group_membership": "passed"})
+                    result = {"case": label, "config_test": "passed", "runtime_group_membership": "passed"}
+                    if label == "inline":
+                        endpoint = f"http://127.0.0.1:{port}/proxies"
+
+                        def choose(group, target):
+                            request = urllib.request.Request(endpoint + "/" + quote(group, safe=""),
+                                data=json.dumps({"name": target}).encode(), method="PUT",
+                                headers={"Content-Type": "application/json"})
+                            with opener.open(request, timeout=3):
+                                pass
+
+                        def expect_chain(expected):
+                            with opener.open(endpoint, timeout=3) as response:
+                                current = json.load(response)["proxies"]
+                            chain = [expected[0]]
+                            while "now" in current.get(chain[-1], {}):
+                                chain.append(current[chain[-1]]["now"])
+                                if len(chain) > len(current):
+                                    raise ValueError("运行中的策略组循环引用")
+                            if chain != expected:
+                                raise ValueError(f"实际策略链不符：{chain} != {expected}")
+
+                        choose("模式选择", "美国")
+                        # One eligible US node makes the url-test choice deterministic.
+                        expect_chain(["YouTube", "国外媒体", "模式选择", "美国", "美国03"])
+                        choose("国外媒体", "美国")
+                        expect_chain(["YouTube", "国外媒体", "美国", "美国03"])
+                        choose("YouTube", "日本")
+                        expect_chain(["YouTube", "日本", "Tokyo"])
+                        expect_chain(["Netflix", "国外媒体", "美国", "美国03"])
+                        choose("AI 服务", "美国")
+                        choose("Gemini", "日本")
+                        expect_chain(["OpenAI", "AI 服务", "美国", "美国03"])
+                        expect_chain(["Gemini", "日本", "Tokyo"])
+                        choose("YouTube", "国外媒体")
+                        expect_chain(["YouTube", "国外媒体", "美国", "美国03"])
+                        result["hierarchy_selection"] = "passed"
+                    results.append(result)
                 finally:
                     process.terminate()
                     process.wait(timeout=10)

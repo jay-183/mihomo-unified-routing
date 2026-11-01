@@ -9,13 +9,13 @@
 | 内联/Provider | 两者及混合均通过内核测试 | 相同 JS/内核数据 | 不使用 Mihomo Proxy Provider；使用原生节点库 |
 | 手动/自动/故障转移 | 原类型保留 | 原类型保留 | select/url-test/fallback；行为需 iOS 验证 |
 | 负载均衡 | consistent-hashing | consistent-hashing | load-balance 同域名粘性；不保证同一哈希算法、相同节点或故障时序 |
-| 七个地区组 | include-all/filter/exclude-filter | 相同 | policy-regex-filter 正向与负向前瞻 |
+| 七个地区自动测速组 | url-test；include-all/filter/exclude-filter | 相同 | url-test，policy-regex-filter 正向与负向前瞻 |
 | 自动测速 | 300 秒、5000 毫秒超时、容差 50 | 相同 | 300 秒、5 秒超时、容差 50；计时实现可能不同 |
 | lazy/max-failed-times | true/3 | true/3 | 无已核实的直接对应参数，未输出猜测参数 |
-| 业务嵌套 | 全部引用保留 | 全部引用保留 | select 嵌套组引用；自动组只包含节点 |
-| 15 条个人规则 | 原文、原顺序、原目标 | 原文、原顺序、原目标 | 当前 15 条原文不变；新增 IPv6 类型按原生语法转换 |
+| 业务嵌套 | 14 个软件跟随 3 个大类，3 个公司组直接跟随模式选择；支持独立覆盖 | 相同，已通过 Mihomo API 选择验证 | select 嵌套组引用及 policy-select-name 默认值；自动组只包含节点，需实机确认 |
+| 15 条个人规则 | 保持源文件顺序和目标，GitHub 指向自定义代理 | 相同 | 当前规则原文和顺序保留；新增 IPv6 类型按原生语法转换 |
 | no-resolve | 保留 | 保留 | 保留；是否已有解析结果取决于客户端 |
-| 公共 domain/ipcidr/classical | 原上游 URL 与 86400 秒周期 | 相同 | 同一次快照转换，19 份来源均有记录 |
+| 公共 domain/ipcidr/classical | 上游 URL 与 86400 秒周期 | 相同 | 同一次快照转换，28 份来源均有记录 |
 | applications 进程规则 | 保留 | 保留；进程识别取决于设备权限/内核 | 98 条不适用，逐条列在 compatibility.json，后续规则继续匹配 |
 | OpenAI DOMAIN-REGEX | 原正则保留 | 原正则保留 | 一条已知规则用通配符近似，下面说明扩大范围 |
 | 最终兜底 | MATCH | MATCH | FINAL |
@@ -40,6 +40,12 @@ DOMAIN-WILDCARD,chatgpt-async-webps-prod-*-*.webpubsub.azure.com
 
 该式包含原来的正常主机名，但数字字段也允许非数字字符。因此可能让少量额外的同前缀 Azure 主机进入 OpenAI 组。
 对应关系及限制在 `dist/compatibility.json` 中公开，测试同时覆盖原式命中和扩大范围。
+
+Netflix 的四条 `(^|\.)前缀.+\.amazonaws\.com$` 正则各展开为根域名、子域名两条通配符，
+其中 `?*` 保留至少一个字符的条件。Google 两条视频域名正则已被同一列表现有的 DOMAIN-SUFFIX 覆盖，
+仅在该后缀仍存在时才允许替换为对应后缀规则；后缀移除后构建会停止。完整映射随兼容报告发布。
+Disney 的 `^hses[1-7]?\.akamaized\.net$` 正则精确展开为 hses、hses1 至 hses7 共八个域名。
+以上转换已做样例对照，Shadowrocket 的通配符运行行为仍需实机验收。
 任何新出现的 DOMAIN-REGEX 或其他未适配类型都会停止构建，不做自动近似。
 
 个人进程规则不允许添加后悄悄丢弃：例如加入 `PROCESS-NAME` 会明确构建失败。

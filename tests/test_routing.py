@@ -132,13 +132,37 @@ class SourceValidation(unittest.TestCase):
             result = load_model(root)
         groups = {g["name"]: g for g in result["proxy-groups"]}
         self.assertEqual(groups["🧪 测试地区"]["type"], "url-test")
-        self.assertIn("🧪 测试地区", groups["🔰 模式选择"]["proxies"])
-        self.assertIn("🧪 测试地区", groups["🤖 OpenAI"]["proxies"])
-        self.assertIn("FixtureRegion", groups["🌐 其他地区"]["exclude-filter"])
+        self.assertNotIn("🧪 测试地区自动", groups)
+        self.assertIn("🧪 测试地区", groups["模式选择"]["proxies"])
+        self.assertIn("🧪 测试地区", groups["OpenAI"]["proxies"])
+        self.assertIn("FixtureRegion", groups["其他地区"]["exclude-filter"])
+
+    def test_apps_follow_categories_and_allow_independent_region_selection(self):
+        groups = {g["name"]: g for g in self.model["proxy-groups"]}
+        families = {
+            "国外媒体": ["YouTube", "Netflix", "Disney+", "TikTok"],
+            "AI 服务": ["OpenAI", "Gemini", "Claude", "Grok"],
+            "通讯社交": ["Telegram", "Discord", "X", "Facebook", "Instagram", "Reddit"],
+        }
+        for parent, apps in families.items():
+            self.assertEqual(groups[parent]["proxies"][0], "模式选择")
+            for app in apps:
+                self.assertEqual(groups[app]["proxies"][0], parent)
+                self.assertIn("日本", groups[app]["proxies"])
+                self.assertIn("DIRECT", groups[app]["proxies"])
+                self.assertNotIn("include-all", groups[app])
+        self.assertIn("DOMAIN-KEYWORD,github,自定义代理", self.model["user-rules"])
+        for company in ["Google", "Apple", "Microsoft"]:
+            self.assertEqual(groups[company]["proxies"][0], "模式选择")
+        self.assertEqual(len(groups), 36)
+        self.assertTrue(all(re.fullmatch(r"[\w +]+", name) for name in groups))
+        self.assertEqual(groups["直连模式"]["proxies"][0], "DIRECT")
+        used = {split_fields(r)[1] for r in self.model["rules"] if r.startswith("RULE-SET,")}
+        self.assertEqual(used, set(self.model["rule-providers"]))
 
     def test_cycle_and_dns_fields_fail(self):
         for filename, mutate in [
-            ("proxy-groups.yaml", lambda d: d["groups"][0]["proxies"].append("🔰 模式选择")),
+            ("proxy-groups.yaml", lambda d: d["groups"][0]["proxies"].append("模式选择")),
             ("settings.yaml", lambda d: d.update({"dns": {"enable": False}})),
         ]:
             with self.subTest(filename=filename), tempfile.TemporaryDirectory() as temporary:
@@ -156,19 +180,19 @@ class SourceValidation(unittest.TestCase):
             root = Path(temporary)
             for path in (ROOT / "src").glob("*.yaml"):
                 (root / path.name).write_bytes(path.read_bytes())
-            data = {"rules": ["DOMAIN-KEYWORD,github,🐳 自定义代理"]}
+            data = {"rules": ["DOMAIN-KEYWORD,github,自定义代理"]}
             (root / "user-rules.yaml").write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
             before = load_model(root)
-            data["rules"][0] = "DOMAIN-KEYWORD,github,🇯🇵 日本"
+            data["rules"][0] = "DOMAIN-KEYWORD,github,日本"
             (root / "user-rules.yaml").write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
             result = load_model(root)
             script = root / "routing.js"
             script.write_text(mihomo.render(result, "fixture"), encoding="utf-8")
             output = apply_script(script, {"proxies": [proxy("Japan")]})
-        self.assertEqual(output["rules"][0], "DOMAIN-KEYWORD,github,🇯🇵 日本")
+        self.assertEqual(output["rules"][0], "DOMAIN-KEYWORD,github,日本")
         self.assertEqual(output["rules"][1:], before["rules"][1:])
         conf = shadowrocket.render(result, "fixture", "https://example.com", "https://example.com/rules", {"applications"})
-        self.assertIn("DOMAIN-KEYWORD,github,🇯🇵 日本", conf)
+        self.assertIn("DOMAIN-KEYWORD,github,日本", conf)
 
 
 class AdapterRegression(unittest.TestCase):
@@ -203,7 +227,8 @@ class AdapterRegression(unittest.TestCase):
     def test_local_dns_is_preserved_by_value_and_object_identity(self):
         code = (self.dist / "clash-verge/routing.js").read_text(encoding="utf-8")
         extra = '\nconst d={enable:false};const c={proxies:[{name:"HK"}],dns:d,ipv6:true};if(main(c).dns!==d||!c.ipv6)throw Error("DNS mutated");'
-        subprocess.run(["node", "-e", code + extra], check=True, capture_output=True)
+        subprocess.run(["node", "-"], input=code + extra, text=True, encoding="utf-8",
+                       check=True, capture_output=True)
 
     def test_all_regions_and_fake_nodes_have_equivalent_regex_membership(self):
         nodes = ["香港 01", "HK Two", "Hong Kong 3", "台北 01", "TW 01", "Tokyo 2", "大阪", "SG 1",
@@ -222,14 +247,14 @@ class AdapterRegression(unittest.TestCase):
                 expected = not re.search(group["exclude-filter"], node) and (
                     "filter" not in group or bool(re.search(group["filter"], node)))
                 self.assertEqual(bool(sr[group["name"]].search(node)), bool(expected), (group["name"], node))
-        self.assertTrue(sr["🌐 其他地区"].search("加拿大 01"))
+        self.assertTrue(sr["其他地区"].search("加拿大 01"))
         self.assertFalse(any(p.search("HK 剩余流量") for p in sr.values()))
 
     def test_business_groups_do_not_expand_concrete_nodes(self):
         for group in self.model["proxy-groups"]:
-            if group["name"] in {"🤖 OpenAI", "✨ Gemini", "🧠 其他 AI", "📲 Telegram", "📢 谷歌服务", "🍎 苹果服务", "Ⓜ️ 微软服务"}:
+            if group["name"] in {"OpenAI", "Gemini", "Claude", "Telegram", "Google", "Apple", "Microsoft", "YouTube", "Netflix"}:
                 self.assertNotIn("include-all", group)
-                self.assertIn("🇯🇵 日本", group["proxies"])
+                self.assertIn("日本", group["proxies"])
 
     def test_public_conversion_preserves_semantics_and_reports_process_rules(self):
         report = json.loads((self.dist / "compatibility.json").read_text(encoding="utf-8"))
@@ -239,13 +264,52 @@ class AdapterRegression(unittest.TestCase):
             actual = [line for line in (self.dist / self.manifest["rules_path"] / (name + ".list")).read_text(encoding="utf-8").splitlines()
                       if line and not line.startswith("#")]
             self.assertEqual(actual, converted)
-            self.assertEqual(len(actual) + len(unsupported), len(original))
+            expansions = sum(len(shadowrocket.DOMAIN_REGEX_EXPANSIONS.get(entry, [entry])) - 1
+                             for entry in original)
+            self.assertEqual(len(actual) + len(unsupported), len(original) + expansions)
             if unsupported:
                 self.assertEqual(report["shadowrocket_unsupported_public_rules"][name], unsupported)
 
     def test_unknown_public_types_fail_instead_of_disappearing(self):
         with self.assertRaises(ValueError):
             shadowrocket.convert_payload("new", {"behavior": "classical"}, ["UNSUPPORTED,value"])
+
+    def test_netflix_regex_expansions_preserve_root_subdomain_and_label_boundaries(self):
+        for original, converted in shadowrocket.DOMAIN_REGEX_EXPANSIONS.items():
+            if "amazonaws" not in original:
+                continue
+            stem = converted[0].split(",", 1)[1].split("?*", 1)[0]
+            for domain in [stem + tail for tail in ["a.amazonaws.com", "us-east-1.amazonaws.com", ".amazonaws.com"]] + [
+                "edge." + stem + "abc.amazonaws.com", "evil" + stem + "abc.amazonaws.com",
+                stem + "abc.amazonaws.com.evil.test", "example.com",
+            ]:
+                self.assertEqual(any(match(rule, domain) for rule in converted), match(original, domain), domain)
+
+    def test_disney_regex_expansion_matches_only_the_eight_original_domains(self):
+        original = r"DOMAIN-REGEX,^hses[1-7]?\.akamaized\.net$"
+        converted = shadowrocket.DOMAIN_REGEX_EXPANSIONS[original]
+        self.assertEqual(len(converted), 8)
+        for suffix in ["", *range(0, 12), "a", "01"]:
+            for prefix in ["", "edge.", "evil"]:
+                domain = f"{prefix}hses{suffix}.akamaized.net"
+                self.assertEqual(any(match(rule, domain) for rule in converted), match(original, domain), domain)
+
+    def test_google_regex_reduction_requires_the_covering_suffix(self):
+        for regex, suffix in shadowrocket.GOOGLE_REDUNDANT_REGEX.items():
+            result, _ = shadowrocket.convert_payload("google", {"behavior": "classical"}, [regex, suffix])
+            self.assertEqual(result, [suffix, suffix])
+            with self.assertRaises(ValueError):
+                shadowrocket.convert_payload("google", {"behavior": "classical"}, [regex])
+
+    def test_shadowrocket_selectors_default_to_their_parent_and_regions_are_automatic(self):
+        lines = dict(line.split(" = ", 1) for line in self.conf["Proxy Group"])
+        for name, parent in [("YouTube", "国外媒体"), ("Netflix", "国外媒体"),
+                             ("OpenAI", "AI 服务"), ("Gemini", "AI 服务"),
+                             ("国外媒体", "模式选择"), ("Google", "模式选择"),
+                             ("直连模式", "DIRECT")]:
+            self.assertIn("policy-select-name=" + parent, split_fields(lines[name]))
+        self.assertEqual(split_fields(lines["美国"])[0], "url-test")
+        self.assertNotIn("美国自动", lines)
 
     def test_openai_regex_approximation_is_explicit_and_includes_original(self):
         original, converted = next(iter(shadowrocket.DOMAIN_REGEX_APPROXIMATIONS.items()))
@@ -267,10 +331,10 @@ class AdapterRegression(unittest.TestCase):
 
     def test_custom_japan_target_does_not_change_other_rules(self):
         model = copy.deepcopy(self.model)
-        model["rules"].insert(0, "DOMAIN-SUFFIX,example.com,🇯🇵 日本")
+        model["rules"].insert(0, "DOMAIN-SUFFIX,example.com,日本")
         model["user-rules"].insert(0, model["rules"][0])
         result = shadowrocket.render(model, "test", "https://example.com", "https://example.com/rules", {"applications"})
-        self.assertIn("DOMAIN-SUFFIX,example.com,🇯🇵 日本", result)
+        self.assertIn("DOMAIN-SUFFIX,example.com,日本", result)
         self.assertEqual(model["rules"][1:], self.model["rules"])
 
     def test_generated_rules_have_equivalent_expected_routes(self):
@@ -318,24 +382,41 @@ class AdapterRegression(unittest.TestCase):
                     return fields[2]
             self.fail("No final rule")
 
-        cases = [("github.com", "", "", "🐳 自定义代理"),
-                 ("github.io", "", "", "🐳 自定义代理"),
-                 ("blinkroom.test", "", "", "🐬 自定义直连"),
-                 ("joox.com", "", "", "🇭🇰 香港"),
-                 ("dnscheck.tools", "", "", "🐳 自定义代理"),
-                 ("ippure.com", "", "", "🖐 手动选择"),
-                 ("api.openai.com", "", "", "🤖 OpenAI"),
-                 ("www.baidu.com", "", "", "🔗 全局直连"),
-                 ("", "18.162.180.119", "HK", "🐬 自定义直连"),
-                 ("", "192.168.10.2", "LAN", "🔗 全局直连"),
-                 ("unmatched-fixture.routing-test", "", "", "🐟 漏网之鱼")]
+        cases = [("github.com", "", "", "自定义代理"),
+                 ("github.io", "", "", "自定义代理"),
+                 ("blinkroom.test", "", "", "直连模式"),
+                 ("joox.com", "", "", "香港"),
+                 ("dnscheck.tools", "", "", "自定义代理"),
+                 ("ippure.com", "", "", "手动选择"),
+                 ("api.openai.com", "", "", "OpenAI"),
+                 ("gemini.google.com", "", "", "Gemini"),
+                 ("claude.ai", "", "", "Claude"),
+                 ("www.youtube.com", "", "", "YouTube"),
+                 ("www.netflix.com", "", "", "Netflix"),
+                 ("apiproxy-device-prod-nlb-test.amazonaws.com", "", "", "Netflix"),
+                 ("edge.dualstack.apiproxy-test.amazonaws.com", "", "", "Netflix"),
+                 ("www.disneyplus.com", "", "", "Disney+"),
+                 ("www.tiktok.com", "", "", "TikTok"),
+                 ("www.facebook.com", "", "", "Facebook"),
+                 ("www.instagram.com", "", "", "Instagram"),
+                 ("www.reddit.com", "", "", "Reddit"),
+                 ("discord.com", "", "", "Discord"),
+                 ("x.com", "", "", "X"),
+                 ("grok.com", "", "", "Grok"),
+                 ("telegram.org", "", "", "Telegram"),
+                 ("", "149.154.167.50", "US", "Telegram"),
+                 ("gitlab.com", "", "", "模式选择"),
+                 ("www.apple.com", "", "", "Apple"),
+                 ("www.microsoft.com", "", "", "Microsoft"),
+                 ("www.google.com", "", "", "Google"),
+                 ("www.baidu.com", "", "", "直连模式"),
+                 ("", "18.162.180.119", "HK", "直连模式"),
+                 ("", "192.168.10.2", "LAN", "直连模式"),
+                 ("unmatched-fixture.routing-test", "", "", "漏网之鱼")]
         for domain, ip, country, expected in cases:
             with self.subTest(domain=domain, ip=ip):
                 source_target = route(self.model["rules"], domain, ip, country)
-                baseline = json.loads((ROOT / "tests/fixtures/baseline.json").read_text(encoding="utf-8"))
-                # Daily edits may deliberately change targets; only the initial source has fixed expectations.
-                if self.model["rules"] == baseline["rules"] and self.model["rule-providers"] == baseline["rule-providers"]:
-                    self.assertEqual(source_target, expected)
+                self.assertEqual(source_target, expected)
                 self.assertEqual(route(self.conf["Rule"], domain, ip, country, True), source_target)
 
 
