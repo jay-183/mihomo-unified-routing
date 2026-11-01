@@ -1,4 +1,4 @@
-// Unified routing build: e4f89bde897769d9
+// Unified routing build: 06315e53934fb74d
 // Generated file. Edit src/*.yaml and rebuild.
 const ROUTING = {
   "proxy-groups": [

@@ -1,0 +1,4 @@
+# applications; source: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt
+# Policy-free Shadowrocket rules; see THIRD_PARTY.md and compatibility.json.
+# Unsupported iOS process rules: 98; details in compatibility.json
+
