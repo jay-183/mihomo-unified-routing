@@ -261,6 +261,15 @@ class AdapterRegression(unittest.TestCase):
         subprocess.run(["node", "-"], input=code + extra, text=True, encoding="utf-8",
                        check=True, capture_output=True)
 
+    def test_local_selection_cache_is_enabled_without_changing_other_profile_settings(self):
+        for client in ["clash-verge", "flclash"]:
+            for profile in [None, {"store-selected": False, "store-fake-ip": False}]:
+                config = {"proxies": [proxy("US One")]}
+                if profile is not None:
+                    config["profile"] = profile
+                result = apply_script(self.dist / client / "routing.js", config)
+                self.assertEqual(result["profile"], {**(profile or {}), "store-selected": True})
+
     def test_all_regions_and_fake_nodes_have_equivalent_regex_membership(self):
         nodes = ["香港 01", "HK Two", "Hong Kong 3", "台北 01", "TW 01", "Tokyo 2", "大阪", "SG 1",
                  "Singapore 2", "Los Angeles", "Seattle", "France Paris", "德国 Frankfurt", "加拿大 01",

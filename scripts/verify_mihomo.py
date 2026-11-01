@@ -142,6 +142,54 @@ def verify(core):
                         expect_chain(["YouTube", "国外媒体", "美国节点", "美国03"])
                         result["hierarchy_selection"] = "passed"
                         result["default_routes_and_us_policies"] = "passed"
+
+                        choose("OpenAI", "美国节点")
+                        choose("手动选择", "美国03")
+                        choose("Apple", "日本节点")
+                        # Simulate an update with a different published default and node order.
+                        updated = yaml.safe_load(path.read_text(encoding="utf-8"))
+                        openai = next(g for g in updated["proxy-groups"] if g["name"] == "OpenAI")
+                        openai["proxies"].remove("日本节点")
+                        openai["proxies"].insert(0, "日本节点")
+                        updated["proxies"].insert(0, node("AAA New Node"))
+                        path.write_text(yaml.safe_dump(updated, allow_unicode=True, sort_keys=False), encoding="utf-8")
+
+                        def reload_config():
+                            request = urllib.request.Request(f"http://127.0.0.1:{port}/configs?force=true",
+                                data=json.dumps({"path": str(path)}).encode(), method="PUT",
+                                headers={"Content-Type": "application/json"})
+                            with opener.open(request, timeout=10):
+                                pass
+
+                        reload_config()
+                        expect_chain(["OpenAI", "美国节点", "美国03"])
+                        expect_chain(["手动选择", "美国03"])
+                        expect_chain(["Apple", "日本节点", "Tokyo"])
+                        result["selection_after_config_reload"] = "passed"
+
+                        process.terminate()
+                        process.wait(timeout=10)
+                        process = subprocess.Popen([core, "-d", str(home), "-f", str(path)], stdout=log, stderr=subprocess.STDOUT,
+                            creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0)
+                        deadline = time.monotonic() + 25
+                        while True:
+                            try:
+                                expect_chain(["OpenAI", "美国节点", "美国03"])
+                                break
+                            except (OSError, ValueError):
+                                if process.poll() is not None or time.monotonic() >= deadline:
+                                    raise
+                                time.sleep(0.2)
+                        expect_chain(["手动选择", "美国03"])
+                        expect_chain(["Apple", "日本节点", "Tokyo"])
+                        result["selection_after_core_restart"] = "passed"
+
+                        # If a selected option disappears, the new first option becomes the fallback.
+                        openai["proxies"].remove("美国节点")
+                        path.write_text(yaml.safe_dump(updated, allow_unicode=True, sort_keys=False), encoding="utf-8")
+                        reload_config()
+                        expect_chain(["OpenAI", "日本节点", "Tokyo"])
+                        result["removed_selection_falls_back_to_default"] = "passed"
                     results.append(result)
                 finally:
                     process.terminate()

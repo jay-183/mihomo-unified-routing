@@ -1,5 +1,5 @@
 {
-  "build": "b57b383dbd68220f",
+  "build": "00010a5338a13442",
   "core": "Mihomo Meta v1.19.33 windows amd64 with go1.26.10 Wed Oct 21 16:44:15 UTC 2026\nUse tags: with_gvisor",
   "cases": [
     {
@@ -7,7 +7,10 @@
       "config_test": "passed",
       "runtime_group_membership": "passed",
       "hierarchy_selection": "passed",
-      "default_routes_and_us_policies": "passed"
+      "default_routes_and_us_policies": "passed",
+      "selection_after_config_reload": "passed",
+      "selection_after_core_restart": "passed",
+      "removed_selection_falls_back_to_default": "passed"
     },
     {
       "case": "provider",

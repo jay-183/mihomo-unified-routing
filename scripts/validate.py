@@ -53,7 +53,8 @@ def validate_dist(directory=ROOT / "dist"):
     outputs = []
     fixture = {"proxies": [{"name": "香港-test", "type": "ss", "server": "127.0.0.1",
                             "port": 9, "cipher": "aes-128-gcm", "password": "test"}],
-               "dns": {"enable": True, "nameserver": ["local-default-marker"]}, "ipv6": True}
+               "dns": {"enable": True, "nameserver": ["local-default-marker"]}, "ipv6": True,
+               "profile": {"store-selected": False, "store-fake-ip": False}}
     for client in ("clash-verge", "flclash"):
         script = directory / client / "routing.js"
         subprocess.run(["node", "--check", str(script)], check=True, capture_output=True, timeout=10)
@@ -63,6 +64,8 @@ def validate_dist(directory=ROOT / "dist"):
                 raise ValueError(f"生成脚本与统一源不同：{client} / {key}")
         if output["dns"] != fixture["dns"] or output["ipv6"] != fixture["ipv6"]:
             raise ValueError("脚本改变了本地 DNS/IPv6")
+        if output["profile"] != {**fixture["profile"], "store-selected": True}:
+            raise ValueError("脚本未启用本地选择缓存或改变了其他 profile 设置")
         clean = apply_script(script, {"proxies": fixture["proxies"]})
         if "dns" in clean or "ipv6" in clean:
             raise ValueError("脚本注入了 DNS/IPv6")

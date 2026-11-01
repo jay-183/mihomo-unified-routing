@@ -28,6 +28,7 @@ function main(config) {
   config.rules = routing.rules;
   config["proxy-providers"] = providers;
   config.proxies = valid.map(p => ({...p, udp: __UDP__}));
+  config.profile = {...config.profile, "store-selected": true};
   return config;
 }
 

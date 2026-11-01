@@ -1,12 +1,12 @@
 # 验证结果
 
-完成于 2026-11-02，北京时间。对应 build：`b57b383dbd68220f`。
+完成于 2026-11-02，北京时间。对应 build：`00010a5338a13442`。
 
 ## 已实际执行
 
 | 检查 | 结果 |
 |---|---|
-| Python unittest | 33 项通过 |
+| Python unittest | 34 项通过 |
 | 两份原脚本数据快照比较 | 完全一致 |
 | 初次迁移基准 | 15 条个人规则、24 个组、19 个 Provider、41 条规则逐字段一致 |
 | 两客户端 JS | Node 24 语法检查及 main 调用通过，输出一致 |
@@ -16,6 +16,7 @@
 | 分层选择 | 14 个软件默认跟随 3 个大类；Google 跟随默认线路，Apple/Microsoft 跟随直连模式；均可独立覆盖 |
 | 地区自动选择 | 七个地区各一个 url-test 组；需要固定节点时通过手动选择组 |
 | 默认路径和美国专用组 | 默认线路首选美国节点；Apple/Microsoft 默认直连；美国两组支持内联和 Provider 节点，复用地区过滤并排除提示节点 |
+| 本地选择保留 | 选择缓存开启且保留其他 profile 设置；配置更新改变默认值/节点顺序后仍保留有效选择，内核重启后恢复；删除选项后回退默认值 |
 | 节点过滤 | 地区关键词、其他地区及流量/到期假节点的跨格式成员测试通过 |
 | 规则对照 | GitHub、YouTube、Netflix、Disney+、TikTok、Facebook、Instagram、Reddit、Discord、X、Grok、Gemini、Claude、Telegram 域名/IP、Apple、Microsoft、Google、个人规则及兜底通过 |
 | 公共规则转换 | 28 份公共源逐项计数核对，Netflix、Disney 的一对多展开单独计数；已知 iOS 差异有显式报告 |
@@ -56,6 +57,8 @@ Provider 的在线下载行为不在该测试范围内，公共规则已预置�
 - 国外媒体改为美国，YouTube 单独选日本，Netflix 继续跟随国外媒体。
 - AI 服务选美国，Gemini 单独选日本，OpenAI 继续跟随 AI 服务。
 - YouTube 重新选择国外媒体后恢复跟随。
+
+另通过回环 API 更新临时配置并重启同一工作目录的内核，验证 OpenAI 直接选择美国节点、手动固定美国03、Apple 选择日本节点都保持；删除 OpenAI 中原选项后回退到新默认值。
 
 测速节点为回环虚拟节点，未连接真实机场。原始结果保存在 `docs/mihomo-validation.json`。
 
