@@ -179,16 +179,22 @@ def load_model(root=ROOT / "src"):
         if item == "$regions":
             groups.extend(region_groups)
             continue
-        if not isinstance(item, dict) or set(item) - {"name", "type", "proxies", "node-pool", "tolerance", "strategy"}:
+        if not isinstance(item, dict) or set(item) - {"name", "type", "proxies", "node-pool", "region", "tolerance", "strategy"}:
             raise ValueError(f"未知策略组字段：{item}")
         group = copy.deepcopy(item)
         pool = group.pop("node-pool", False)
-        if pool or group["name"] == "🔰 模式选择":
+        region_id = group.pop("region", None)
+        if pool:
             group = {**settings["test"], **group}
         if pool:
             group.update({"include-all": True, "exclude-filter": exclude})
+        if region_id is not None:
+            matched = [r for r in regions if r["id"] == region_id]
+            if not pool or len(matched) != 1:
+                raise ValueError(f"地区节点池引用无效：{region_id}")
+            group["filter"] = matched[0]["filter"]
         if "proxies" in group:
-            group["proxies"] = expand(group["proxies"], services)
+            group["proxies"] = list(dict.fromkeys(expand(group["proxies"], services)))
         groups.append(group)
     names = [g["name"] for g in groups]
     if len(set(names)) != len(names) or set(names) & (BUILTINS | {"GLOBAL", "COMPATIBLE"}):

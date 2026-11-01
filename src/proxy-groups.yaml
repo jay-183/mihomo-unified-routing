@@ -1,20 +1,25 @@
 service-options:
-- 模式选择
+- 默认线路
 - 手动选择
 - 自动选择
 - $regions
 - 故障转移
 - 负载均衡
+- 美国故障转移
+- 美国负载均衡
 - DIRECT
 groups:
-- name: 模式选择
+- name: 默认线路
   type: select
   proxies:
+  - 美国节点
   - 手动选择
   - 自动选择
   - $regions
   - 故障转移
   - 负载均衡
+  - 美国故障转移
+  - 美国负载均衡
   - DIRECT
 - name: 手动选择
   type: select
@@ -112,12 +117,23 @@ groups:
 - name: Apple
   type: select
   proxies:
+  - 直连模式
   - $services
 - name: Microsoft
   type: select
   proxies:
+  - 直连模式
   - $services
 - $regions
+- name: 美国故障转移
+  type: fallback
+  node-pool: true
+  region: US
+- name: 美国负载均衡
+  type: load-balance
+  strategy: consistent-hashing
+  node-pool: true
+  region: US
 - name: 故障转移
   type: fallback
   node-pool: true
@@ -134,7 +150,7 @@ groups:
   type: select
   proxies:
   - DIRECT
-  - 模式选择
+  - 默认线路
 - name: 自定义代理
   type: select
   proxies:

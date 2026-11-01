@@ -6,7 +6,7 @@ rules:
 - DOMAIN-KEYWORD,ippure,手动选择
 - DOMAIN-KEYWORD,todetect,自定义代理
 - DOMAIN-KEYWORD,biu.moe,直连模式
-- DOMAIN-KEYWORD,joox,香港
+- DOMAIN-KEYWORD,joox,香港节点
 - DOMAIN-KEYWORD,music-api.gdstudio.xyz,直连模式
 - DOMAIN-KEYWORD,dglab.xiaoyudi,直连模式
 - DOMAIN-KEYWORD,blinkroom,直连模式

@@ -10,9 +10,10 @@
 | 手动/自动/故障转移 | 原类型保留 | 原类型保留 | select/url-test/fallback；行为需 iOS 验证 |
 | 负载均衡 | consistent-hashing | consistent-hashing | load-balance 同域名粘性；不保证同一哈希算法、相同节点或故障时序 |
 | 七个地区自动测速组 | url-test；include-all/filter/exclude-filter | 相同 | url-test，policy-regex-filter 正向与负向前瞻 |
+| 美国专用策略 | fallback 与 consistent-hashing 负载均衡，共用美国地区过滤条件 | 相同，实际成员已验证 | fallback/load-balance，沿用同一美国节点正则，需实机确认 |
 | 自动测速 | 300 秒、5000 毫秒超时、容差 50 | 相同 | 300 秒、5 秒超时、容差 50；计时实现可能不同 |
 | lazy/max-failed-times | true/3 | true/3 | 无已核实的直接对应参数，未输出猜测参数 |
-| 业务嵌套 | 14 个软件跟随 3 个大类，3 个公司组直接跟随模式选择；支持独立覆盖 | 相同，已通过 Mihomo API 选择验证 | select 嵌套组引用及 policy-select-name 默认值；自动组只包含节点，需实机确认 |
+| 业务嵌套 | 14 个软件跟随 3 个大类，Google 跟随默认线路，Apple/Microsoft 跟随直连模式；支持独立覆盖 | 相同，已通过 Mihomo API 选择验证 | select 嵌套组引用及 policy-select-name 默认值；自动组只包含节点，需实机确认 |
 | 15 条个人规则 | 保持源文件顺序和目标，GitHub 指向自定义代理 | 相同 | 当前规则原文和顺序保留；新增 IPv6 类型按原生语法转换 |
 | no-resolve | 保留 | 保留 | 保留；是否已有解析结果取决于客户端 |
 | 公共 domain/ipcidr/classical | 上游 URL 与 86400 秒周期 | 相同 | 同一次快照转换，28 份来源均有记录 |

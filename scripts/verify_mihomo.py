@@ -28,9 +28,9 @@ def verify(core):
     version = subprocess.run([core, "-v"], text=True, encoding="utf-8", capture_output=True, check=True).stdout.strip()
     model = load_model()
     cases = {
-        "inline": {"proxies": [node(n) for n in ["HK One", "TW One", "Tokyo", "Singapore", "美国03", "Paris", "加拿大", "HK 剩余流量"]]},
-        "provider": {"proxy-providers": {"fixture": {"type": "inline", "payload": [node("Japan Two"), node("US Expiry")], "health-check": {"enable": False}}}},
-        "mixed": {"proxies": [node("SG Three")], "proxy-providers": {"fixture": {"type": "inline", "payload": [node("香港 Four"), node("reset HK")], "health-check": {"enable": False}}}},
+        "inline": {"proxies": [node(n) for n in ["HK One", "TW One", "Tokyo", "Singapore", "美国03", "美国 到期", "Paris", "加拿大", "HK 剩余流量"]]},
+        "provider": {"proxy-providers": {"fixture": {"type": "inline", "payload": [node("Japan Two"), node("US Two"), node("US Expiry")], "health-check": {"enable": False}}}},
+        "mixed": {"proxies": [node("SG Three"), node("US Inline")], "proxy-providers": {"fixture": {"type": "inline", "payload": [node("香港 Four"), node("US Provider"), node("reset HK")], "health-check": {"enable": False}}}},
     }
     results = []
     work = ROOT / ".cache"
@@ -116,21 +116,32 @@ def verify(core):
                             if chain != expected:
                                 raise ValueError(f"实际策略链不符：{chain} != {expected}")
 
-                        choose("模式选择", "美国")
                         # One eligible US node makes the url-test choice deterministic.
-                        expect_chain(["YouTube", "国外媒体", "模式选择", "美国", "美国03"])
-                        choose("国外媒体", "美国")
-                        expect_chain(["YouTube", "国外媒体", "美国", "美国03"])
-                        choose("YouTube", "日本")
-                        expect_chain(["YouTube", "日本", "Tokyo"])
-                        expect_chain(["Netflix", "国外媒体", "美国", "美国03"])
-                        choose("AI 服务", "美国")
-                        choose("Gemini", "日本")
-                        expect_chain(["OpenAI", "AI 服务", "美国", "美国03"])
-                        expect_chain(["Gemini", "日本", "Tokyo"])
+                        expect_chain(["YouTube", "国外媒体", "默认线路", "美国节点", "美国03"])
+                        expect_chain(["Apple", "直连模式", "DIRECT"])
+                        expect_chain(["Microsoft", "直连模式", "DIRECT"])
+                        expect_chain(["Google", "默认线路", "美国节点", "美国03"])
+                        choose("OpenAI", "美国故障转移")
+                        expect_chain(["OpenAI", "美国故障转移", "美国03"])
+                        choose("OpenAI", "美国负载均衡")
+                        with opener.open(endpoint, timeout=3) as response:
+                            current = json.load(response)["proxies"]
+                        if current["OpenAI"]["now"] != "美国负载均衡":
+                            raise ValueError("OpenAI 未切换到美国负载均衡")
+                        choose("OpenAI", "AI 服务")
+                        choose("国外媒体", "美国节点")
+                        expect_chain(["YouTube", "国外媒体", "美国节点", "美国03"])
+                        choose("YouTube", "日本节点")
+                        expect_chain(["YouTube", "日本节点", "Tokyo"])
+                        expect_chain(["Netflix", "国外媒体", "美国节点", "美国03"])
+                        choose("AI 服务", "美国节点")
+                        choose("Gemini", "日本节点")
+                        expect_chain(["OpenAI", "AI 服务", "美国节点", "美国03"])
+                        expect_chain(["Gemini", "日本节点", "Tokyo"])
                         choose("YouTube", "国外媒体")
-                        expect_chain(["YouTube", "国外媒体", "美国", "美国03"])
+                        expect_chain(["YouTube", "国外媒体", "美国节点", "美国03"])
                         result["hierarchy_selection"] = "passed"
+                        result["default_routes_and_us_policies"] = "passed"
                     results.append(result)
                 finally:
                     process.terminate()

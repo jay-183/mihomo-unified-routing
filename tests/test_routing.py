@@ -133,9 +133,9 @@ class SourceValidation(unittest.TestCase):
         groups = {g["name"]: g for g in result["proxy-groups"]}
         self.assertEqual(groups["🧪 测试地区"]["type"], "url-test")
         self.assertNotIn("🧪 测试地区自动", groups)
-        self.assertIn("🧪 测试地区", groups["模式选择"]["proxies"])
+        self.assertIn("🧪 测试地区", groups["默认线路"]["proxies"])
         self.assertIn("🧪 测试地区", groups["OpenAI"]["proxies"])
-        self.assertIn("FixtureRegion", groups["其他地区"]["exclude-filter"])
+        self.assertIn("FixtureRegion", groups["其他地区节点"]["exclude-filter"])
 
     def test_apps_follow_categories_and_allow_independent_region_selection(self):
         groups = {g["name"]: g for g in self.model["proxy-groups"]}
@@ -145,24 +145,55 @@ class SourceValidation(unittest.TestCase):
             "通讯社交": ["Telegram", "Discord", "X", "Facebook", "Instagram", "Reddit"],
         }
         for parent, apps in families.items():
-            self.assertEqual(groups[parent]["proxies"][0], "模式选择")
+            self.assertEqual(groups[parent]["proxies"][0], "默认线路")
             for app in apps:
                 self.assertEqual(groups[app]["proxies"][0], parent)
-                self.assertIn("日本", groups[app]["proxies"])
+                self.assertIn("日本节点", groups[app]["proxies"])
                 self.assertIn("DIRECT", groups[app]["proxies"])
                 self.assertNotIn("include-all", groups[app])
         self.assertIn("DOMAIN-KEYWORD,github,自定义代理", self.model["user-rules"])
-        for company in ["Google", "Apple", "Microsoft"]:
-            self.assertEqual(groups[company]["proxies"][0], "模式选择")
-        self.assertEqual(len(groups), 36)
+        self.assertEqual(groups["Google"]["proxies"][0], "默认线路")
+        for company in ["Apple", "Microsoft"]:
+            self.assertEqual(groups[company]["proxies"][0], "直连模式")
+        self.assertEqual(groups["默认线路"]["proxies"][0], "美国节点")
+        self.assertEqual(len(groups["默认线路"]["proxies"]), len(set(groups["默认线路"]["proxies"])))
+        for group in groups.values():
+            if group["type"] == "select" and group["name"] not in {"手动选择", "广告过滤", "直连模式"}:
+                self.assertIn("美国故障转移", group["proxies"])
+                self.assertIn("美国负载均衡", group["proxies"])
+        self.assertEqual(len(groups), 38)
         self.assertTrue(all(re.fullmatch(r"[\w +]+", name) for name in groups))
         self.assertEqual(groups["直连模式"]["proxies"][0], "DIRECT")
         used = {split_fields(r)[1] for r in self.model["rules"] if r.startswith("RULE-SET,")}
         self.assertEqual(used, set(self.model["rule-providers"]))
 
+    def test_us_policies_share_region_filter_and_reject_unknown_region(self):
+        groups = {g["name"]: g for g in self.model["proxy-groups"]}
+        for name, kind in [("美国故障转移", "fallback"), ("美国负载均衡", "load-balance")]:
+            group = groups[name]
+            self.assertEqual(group["type"], kind)
+            self.assertEqual(group["filter"], groups["美国节点"]["filter"])
+            self.assertEqual(group["exclude-filter"], groups["美国节点"]["exclude-filter"])
+            nodes = ["US One", "美国02", "Tokyo", "HK One", "美国 到期"]
+            actual = [n for n in nodes if re.search(group["filter"], n) and not re.search(group["exclude-filter"], n)]
+            self.assertEqual(actual, ["US One", "美国02"])
+            self.assertEqual(group["interval"], self.model["settings"]["test"]["interval"])
+        self.assertEqual(groups["美国负载均衡"]["strategy"], "consistent-hashing")
+        for region_id, pool in [("MISSING", True), ("US", False)]:
+            with self.subTest(region_id=region_id, pool=pool), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                for path in (ROOT / "src").glob("*.yaml"):
+                    (root / path.name).write_bytes(path.read_bytes())
+                data = load_yaml(root / "proxy-groups.yaml")
+                group = next(g for g in data["groups"] if isinstance(g, dict) and g["name"] == "美国故障转移")
+                group.update({"region": region_id, "node-pool": pool})
+                (root / "proxy-groups.yaml").write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "地区节点池引用无效"):
+                    load_model(root)
+
     def test_cycle_and_dns_fields_fail(self):
         for filename, mutate in [
-            ("proxy-groups.yaml", lambda d: d["groups"][0]["proxies"].append("模式选择")),
+            ("proxy-groups.yaml", lambda d: d["groups"][0]["proxies"].append("默认线路")),
             ("settings.yaml", lambda d: d.update({"dns": {"enable": False}})),
         ]:
             with self.subTest(filename=filename), tempfile.TemporaryDirectory() as temporary:
@@ -183,16 +214,16 @@ class SourceValidation(unittest.TestCase):
             data = {"rules": ["DOMAIN-KEYWORD,github,自定义代理"]}
             (root / "user-rules.yaml").write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
             before = load_model(root)
-            data["rules"][0] = "DOMAIN-KEYWORD,github,日本"
+            data["rules"][0] = "DOMAIN-KEYWORD,github,日本节点"
             (root / "user-rules.yaml").write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
             result = load_model(root)
             script = root / "routing.js"
             script.write_text(mihomo.render(result, "fixture"), encoding="utf-8")
             output = apply_script(script, {"proxies": [proxy("Japan")]})
-        self.assertEqual(output["rules"][0], "DOMAIN-KEYWORD,github,日本")
+        self.assertEqual(output["rules"][0], "DOMAIN-KEYWORD,github,日本节点")
         self.assertEqual(output["rules"][1:], before["rules"][1:])
         conf = shadowrocket.render(result, "fixture", "https://example.com", "https://example.com/rules", {"applications"})
-        self.assertIn("DOMAIN-KEYWORD,github,日本", conf)
+        self.assertIn("DOMAIN-KEYWORD,github,日本节点", conf)
 
 
 class AdapterRegression(unittest.TestCase):
@@ -247,14 +278,14 @@ class AdapterRegression(unittest.TestCase):
                 expected = not re.search(group["exclude-filter"], node) and (
                     "filter" not in group or bool(re.search(group["filter"], node)))
                 self.assertEqual(bool(sr[group["name"]].search(node)), bool(expected), (group["name"], node))
-        self.assertTrue(sr["其他地区"].search("加拿大 01"))
+        self.assertTrue(sr["其他地区节点"].search("加拿大 01"))
         self.assertFalse(any(p.search("HK 剩余流量") for p in sr.values()))
 
     def test_business_groups_do_not_expand_concrete_nodes(self):
         for group in self.model["proxy-groups"]:
             if group["name"] in {"OpenAI", "Gemini", "Claude", "Telegram", "Google", "Apple", "Microsoft", "YouTube", "Netflix"}:
                 self.assertNotIn("include-all", group)
-                self.assertIn("日本", group["proxies"])
+                self.assertIn("日本节点", group["proxies"])
 
     def test_public_conversion_preserves_semantics_and_reports_process_rules(self):
         report = json.loads((self.dist / "compatibility.json").read_text(encoding="utf-8"))
@@ -305,10 +336,11 @@ class AdapterRegression(unittest.TestCase):
         lines = dict(line.split(" = ", 1) for line in self.conf["Proxy Group"])
         for name, parent in [("YouTube", "国外媒体"), ("Netflix", "国外媒体"),
                              ("OpenAI", "AI 服务"), ("Gemini", "AI 服务"),
-                             ("国外媒体", "模式选择"), ("Google", "模式选择"),
+                             ("国外媒体", "默认线路"), ("Google", "默认线路"),
+                             ("默认线路", "美国节点"), ("Apple", "直连模式"), ("Microsoft", "直连模式"),
                              ("直连模式", "DIRECT")]:
             self.assertIn("policy-select-name=" + parent, split_fields(lines[name]))
-        self.assertEqual(split_fields(lines["美国"])[0], "url-test")
+        self.assertEqual(split_fields(lines["美国节点"])[0], "url-test")
         self.assertNotIn("美国自动", lines)
 
     def test_openai_regex_approximation_is_explicit_and_includes_original(self):
@@ -331,10 +363,10 @@ class AdapterRegression(unittest.TestCase):
 
     def test_custom_japan_target_does_not_change_other_rules(self):
         model = copy.deepcopy(self.model)
-        model["rules"].insert(0, "DOMAIN-SUFFIX,example.com,日本")
+        model["rules"].insert(0, "DOMAIN-SUFFIX,example.com,日本节点")
         model["user-rules"].insert(0, model["rules"][0])
         result = shadowrocket.render(model, "test", "https://example.com", "https://example.com/rules", {"applications"})
-        self.assertIn("DOMAIN-SUFFIX,example.com,日本", result)
+        self.assertIn("DOMAIN-SUFFIX,example.com,日本节点", result)
         self.assertEqual(model["rules"][1:], self.model["rules"])
 
     def test_generated_rules_have_equivalent_expected_routes(self):
@@ -385,7 +417,7 @@ class AdapterRegression(unittest.TestCase):
         cases = [("github.com", "", "", "自定义代理"),
                  ("github.io", "", "", "自定义代理"),
                  ("blinkroom.test", "", "", "直连模式"),
-                 ("joox.com", "", "", "香港"),
+                 ("joox.com", "", "", "香港节点"),
                  ("dnscheck.tools", "", "", "自定义代理"),
                  ("ippure.com", "", "", "手动选择"),
                  ("api.openai.com", "", "", "OpenAI"),
@@ -405,7 +437,7 @@ class AdapterRegression(unittest.TestCase):
                  ("grok.com", "", "", "Grok"),
                  ("telegram.org", "", "", "Telegram"),
                  ("", "149.154.167.50", "US", "Telegram"),
-                 ("gitlab.com", "", "", "模式选择"),
+                 ("gitlab.com", "", "", "默认线路"),
                  ("www.apple.com", "", "", "Apple"),
                  ("www.microsoft.com", "", "", "Microsoft"),
                  ("www.google.com", "", "", "Google"),

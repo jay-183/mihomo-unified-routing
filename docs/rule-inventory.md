@@ -63,16 +63,16 @@ MetaCubeX 快照：`cf25ccf5046dd902befc64bff21c0047244796a9`；Loyalsoldier 快
 | `applications` | 常见软件进程直连 | 基础集合 | 已使用 | 直连模式 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/applications.txt) |
 | `cncidr` | 中国大陆 IP | IP 范围 | 已使用 | 直连模式 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/cncidr.txt) |
 | `direct` | 直连域名 | 基础集合 | 已使用 | 直连模式 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/direct.txt) |
-| `gfw` | GFWList 域名 | 基础集合 | 已使用 | 模式选择 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/gfw.txt) |
+| `gfw` | GFWList 域名 | 基础集合 | 已使用 | 默认线路 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/gfw.txt) |
 | `google` | Google 中国大陆可直连域名 | 基础集合 | 未单独引用 | — | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/google.txt) |
 | `greatfire` | GreatFire 相关域名 | 基础集合 | 未单独引用 | — | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/greatfire.txt) |
 | `icloud` | iCloud | 基础集合 | 已使用 | Apple | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/icloud.txt) |
 | `lancidr` | 局域网及保留 IP | IP 范围 | 已使用 | 直连模式 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/lancidr.txt) |
 | `private` | 私有网络域名 | 基础集合 | 已使用 | 直连模式 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/private.txt) |
-| `proxy` | 代理域名 | 基础集合 | 已使用 | 模式选择 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/proxy.txt) |
+| `proxy` | 代理域名 | 基础集合 | 已使用 | 默认线路 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/proxy.txt) |
 | `reject` | 广告域名 | 基础集合 | 已使用 | 广告过滤 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/reject.txt) |
 | `telegramcidr` | Telegram IP | IP 范围 | 已使用 | Telegram | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/telegramcidr.txt) |
-| `tld-not-cn` | 非中国大陆顶级域名 | 基础集合 | 已使用 | 模式选择 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/tld-not-cn.txt) |
+| `tld-not-cn` | 非中国大陆顶级域名 | 基础集合 | 已使用 | 默认线路 | [查看](https://github.com/Loyalsoldier/clash-rules/blob/97ddd01ff9bfcc9ab8bfa9e8da76ad2aab828a3b/tld-not-cn.txt) |
 
 ## 域名完整版完整列表
 

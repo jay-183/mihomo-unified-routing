@@ -24,9 +24,9 @@ rules:
 - RULE-SET,icloud,Apple
 - RULE-SET,apple,Apple
 - RULE-SET,google,Google
-- RULE-SET,proxy,模式选择
-- RULE-SET,gfw,模式选择
-- RULE-SET,tld-not-cn,模式选择
+- RULE-SET,proxy,默认线路
+- RULE-SET,gfw,默认线路
+- RULE-SET,tld-not-cn,默认线路
 - RULE-SET,direct,直连模式
 - RULE-SET,lancidr,直连模式,no-resolve
 - RULE-SET,cncidr,直连模式,no-resolve

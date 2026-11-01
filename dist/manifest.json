@@ -1,7 +1,7 @@
 {
-  "build": "c4446f9798c2f655",
-  "source_sha256": "a43d3f4a8ec388a14a57970fc496e03d9af7d1b2c8048d88ad2d4bbc684cbeb3",
-  "generator_sha256": "c6c6199bb0cccd62b63e06c9aee6600d8aaed90899656dbb98bfc3c687c280ff",
+  "build": "b57b383dbd68220f",
+  "source_sha256": "97b44d4a328f9190ce03f5a9e4d31d53d993a105f29e237ac187921f71bde140",
+  "generator_sha256": "65fc42f5e3835d43db9a8a5e9386f9ca6faf3e8c358c6957cab4faf4a59e52b4",
   "base_url": "https://raw.githubusercontent.com/jay-183/mihomo-unified-routing/release",
   "upstream_sha256": {
     "anthropic": "e3c4c91e89b17904594f214de49efe747b668704ad91ec5e832aaf83b87f4370",
@@ -34,13 +34,13 @@
     "youtube": "c4e9bdb1ca911692a3887a950fe06cc09e3d525a4916ae78a9b5a2a9568d2ec1"
   },
   "rules_path": "rules/df520d2d90fd6f54",
-  "group_count": 36,
+  "group_count": 38,
   "rule_count": 49,
   "user_rule_count": 15,
   "files": {
-    "clash-verge/routing.js": "ef4f4f699a7ebbe12f40b99d2076b2d010c98372c7db7fc85e995df772087f05",
-    "compatibility.json": "c2658825bca9903a92067080be8415d752f51e6cddfbff88067157094bf12b07",
-    "flclash/routing.js": "ef4f4f699a7ebbe12f40b99d2076b2d010c98372c7db7fc85e995df772087f05",
+    "clash-verge/routing.js": "052409e64979f55632201c8829d15cb82ecdeea06a4d40b3e5b2e054303b5414",
+    "compatibility.json": "4d50ad8de0eed1e6a048afb9a104a2d204e59595106c53d3f6077bafeb5b2c0e",
+    "flclash/routing.js": "052409e64979f55632201c8829d15cb82ecdeea06a4d40b3e5b2e054303b5414",
     "licenses/Loyalsoldier-clash-rules-LICENSE.txt": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
     "licenses/MetaCubeX-meta-rules-dat-LICENSE.txt": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
     "rules/df520d2d90fd6f54/anthropic.list": "4e678b2cbc3b233d3a7766d92aa8f92de1ff99f84a2a454d5793f9db2c5b1d3f",
@@ -71,7 +71,7 @@
     "rules/df520d2d90fd6f54/twitter.list": "e5b0a307a8bc139790676cb70db7edbe85e6357292f41a52184f47b57c5f477c",
     "rules/df520d2d90fd6f54/xai.list": "3891824e7e8aa7c1114d18e6362d5353e55917d858329b1b9f48ad1f0896e463",
     "rules/df520d2d90fd6f54/youtube.list": "18aeb5fbd93f294e324bc5aa3b962386a2a36b2936c0f45ed4036e42374a9459",
-    "shadowrocket/config.conf": "ae5305e730c36f9d2711b5ce4407468f50dcd4e9e92ce11f9186d61107df368f",
+    "shadowrocket/config.conf": "dbd7763858d8ece1dffa12905e06168d843202deb463947f2e748a9f13e0baea",
     "THIRD_PARTY.md": "0a746ddbc797f9bb96fc80ada52f8241ca7062f5be02ad40985eb56eee144980",
     "upstream/anthropic.yaml": "e3c4c91e89b17904594f214de49efe747b668704ad91ec5e832aaf83b87f4370",
     "upstream/apple.yaml": "7f550ea9f6fd1f787a9c9c816598b13e3c67c43af35fedf12a141a0abcf8959d",
